@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🌙 Emmi-chan ka Special World 🌙</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#f5c842;--teal:#2dd4bf;--pink:#f472b6;
+  --purple:#a78bfa;--mint:#6ee7b7;--peach:#fda4af;
+  --dark:#050d1a;--card:#0a1628;--green:#34d399;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);font-family:'Quicksand',sans-serif;overflow-x:hidden;cursor:none;}
+#cur{width:22px;height:22px;
+background:radial-gradient(circle,#fff 0%,var(--gold) 55%,transparent 100%);
+border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+transform:translate(-50%,-50%);
+box-shadow:0 0 10px var(--gold),0 0 22px var(--gold);}
+#rain{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+.cd{position:absolute;top:-50px;font-size:1.3rem;animation:fall linear infinite;opacity:.75;}
+@keyframes fall{0%{transform:translateY(-50px) rotate(0deg);}100%{transform:translateY(105vh) rotate(360deg);opacity:0;}}
+#curtain{position:fixed;inset:0;z-index:500;display:flex;}
+.c-half{width:50%;height:100%;background:linear-gradient(135deg,#0a1628,#050d1a);
+transition:transform 1.3s cubic-bezier(.77,0,.18,1);}
+.c-left{transform-origin:left;}
+.c-right{transform-origin:right;}
+#curtain.open .c-left{transform:translateX(-100%);}
+#curtain.open .c-right{transform:translateX(100%);}
+#curtain-text{position:absolute;inset:0;display:flex;flex-direction:column;
+align-items:center;justify-content:center;z-index:1;text-align:center;padding:1rem;}
+#curtain-text h1{font-family:'Pacifico',cursive;font-size:clamp(1.6rem,5vw,3rem);
+color:var(--gold);text-shadow:0 0 30px var(--gold);animation:glow 1.2s ease infinite;}
+#curtain-text p{font-family:'Dancing Script',cursive;color:var(--teal);font-size:1.3rem;margin-top:.6rem;}
+@keyframes glow{0%,100%{opacity:1;}50%{opacity:.4;}}
+main{position:relative;z-index:2;}
+#hero{min-height:100vh;display:flex;flex-direction:column;
+align-items:center;justify-content:center;text-align:center;padding:2rem;
+background:radial-gradient(ellipse at 50% 40%,#0d1f3a 0%,#050d1a 70%);}
+.bismillah{font-family:'Dancing Script',cursive;font-size:clamp(1rem,3vw,1.5rem);
+color:var(--gold);opacity:.85;margin-bottom:2rem;letter-spacing:.05em;text-shadow:0 0 12px var(--gold);}
+.moon-box{width:160px;height:160px;border-radius:50%;
+background:radial-gradient(circle,#1a3a5022,transparent 70%);
+border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:5rem;
+box-shadow:0 0 40px var(--gold),0 0 80px #f5c84255;
+animation:pulse 2.5s ease-in-out infinite;cursor:pointer;margin-bottom:2rem;transition:transform .3s;}
+.moon-box:hover{transform:scale(1.1) rotate(8deg);}
+@keyframes pulse{0%,100%{box-shadow:0 0 40px var(--gold),0 0 80px #f5c84244;}
+50%{box-shadow:0 0 70px var(--gold),0 0 140px #f5c84266;}}
+.hero-title{font-family:'Pacifico',cursive;font-size:clamp(1.8rem,6vw,4rem);
+background:linear-gradient(90deg,var(--gold),var(--teal),var(--mint),var(--purple),var(--gold));
+background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+animation:shimmer 3s linear infinite;filter:drop-shadow(0 0 14px var(--gold));margin-bottom:.5rem;}
+@keyframes shimmer{0%{background-position:0%;}100%{background-position:300%;}}
+.hero-sub{font-family:'Dancing Script',cursive;font-size:clamp(1rem,3vw,1.6rem);
+color:var(--teal);margin-bottom:2.5rem;opacity:0;animation:fadeUp 1s ease 1.8s forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.btn{background:linear-gradient(135deg,#1a5c4a,var(--teal));color:#fff;border:none;
+padding:.85rem 2.5rem;border-radius:50px;font-size:1rem;font-family:'Quicksand',sans-serif;
+font-weight:700;cursor:pointer;box-shadow:0 0 25px var(--teal);
+transition:transform .25s,box-shadow .25s;opacity:0;animation:fadeUp 1s ease 2.2s forwards;}
+.btn:hover{transform:scale(1.08);box-shadow:0 0 50px var(--teal);}
+.overlay{position:fixed;inset:0;background:#000c;display:flex;
+align-items:center;justify-content:center;z-index:300;
+opacity:0;pointer-events:none;transition:opacity .35s;}
+.overlay.show{opacity:1;pointer-events:all;}
+.pop-card{background:linear-gradient(145deg,#0a1f35,#0d2a40);
+border:2px solid var(--gold);border-radius:24px;padding:2.5rem 2rem;
+max-width:380px;width:90%;text-align:center;
+box-shadow:0 0 60px var(--gold),0 0 120px #f5c84233;
+transform:scale(.7);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.overlay.show .pop-card{transform:scale(1);}
+.pop-card .emoji{font-size:3rem;margin-bottom:1rem;display:block;}
+.pop-card p{font-family:'Dancing Script',cursive;font-size:1.3rem;
+color:#e2f0ff;line-height:1.8;margin-bottom:1.2rem;}
+.pop-card .from{color:var(--gold);font-size:.95rem;font-family:'Quicksand',sans-serif;}
+.close-btn{background:linear-gradient(135deg,#1a5c4a,var(--teal));color:#fff;border:none;
+padding:.5rem 1.8rem;border-radius:50px;font-family:'Quicksand',sans-serif;
+font-weight:700;cursor:pointer;margin-top:1rem;}
+.sec-title{font-family:'Pacifico',cursive;font-size:clamp(1.5rem,4vw,2.6rem);
+text-align:center;margin-bottom:.5rem;
+background:linear-gradient(90deg,var(--gold),var(--teal));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+filter:drop-shadow(0 0 10px var(--gold));}
+.sec-sub{text-align:center;color:var(--mint);font-family:'Dancing Script',cursive;font-size:1.2rem;margin-bottom:2.5rem;}
+#jars{padding:5rem 1.5rem;background:radial-gradient(ellipse at 50% 100%,#0d2030 0%,#050d1a 60%);}
+.jars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1.5rem;max-width:800px;margin:0 auto;}
+.jar{background:var(--card);border-radius:20px;padding:1.5rem 1rem;text-align:center;
+border:1.5px solid #ffffff15;cursor:pointer;transition:transform .3s,box-shadow .3s;}
+.jar:hover{transform:translateY(-8px) scale(1.05);}
+.jar .je{font-size:3rem;display:block;margin-bottom:.5rem;}
+.jar .jl{font-size:.82rem;font-weight:700;color:var(--gold);}
+.j0{box-shadow:0 0 20px #f5c84244;} .j1{box-shadow:0 0 20px #2dd4bf44;}
+.j2{box-shadow:0 0 20px #6ee7b744;} .j3{box-shadow:0 0 20px #a78bfa44;}
+.j4{box-shadow:0 0 20px #34d39944;} .j5{box-shadow:0 0 20px #f472b644;}
+.jar:hover.j0{box-shadow:0 0 45px var(--gold);} .jar:hover.j1{box-shadow:0 0 45px var(--teal);}
+.jar:hover.j2{box-shadow:0 0 45px var(--mint);} .jar:hover.j3{box-shadow:0 0 45px var(--purple);}
+.jar:hover.j4{box-shadow:0 0 45px var(--green);} .jar:hover.j5{box-shadow:0 0 45px var(--pink);}
+#letter-sec{padding:5rem 1.5rem;text-align:center;
+background:radial-gradient(ellipse at 50% 0%,#0d2030 0%,#050d1a 65%);}
+.env-wrap{display:inline-block;cursor:pointer;}
+.env{width:240px;height:160px;background:linear-gradient(135deg,#1a5c4a,#0d2a40);
+border:2px solid var(--gold);border-radius:12px;
+display:flex;align-items:center;justify-content:center;flex-direction:column;
+font-size:4rem;box-shadow:0 0 40px var(--gold);
+margin:0 auto 2rem;transition:transform .4s;position:relative;}
+.env::after{content:'Candy ki taraf se 🍬';position:absolute;bottom:10px;
+font-family:'Dancing Script',cursive;font-size:.9rem;color:var(--gold);opacity:.85;}
+.env-wrap:hover .env{transform:scale(1.06) rotate(-3deg);}
+#letter-card{max-width:500px;margin:0 auto;
+background:linear-gradient(145deg,#f0f8f4,#e8f4ec);border-radius:16px;
+padding:2.5rem 2rem;box-shadow:0 0 50px var(--teal);
+font-family:'Dancing Script',cursive;font-size:1.3rem;color:#0a2a1a;
+line-height:2;display:none;animation:slideIn .6s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+#letter-card .seal{font-size:2rem;margin-bottom:.8rem;display:block;}
+#letter-card .sign{color:#1a5c4a;font-size:1.4rem;margin-top:1rem;font-weight:700;}
+#duas-sec{padding:5rem 1.5rem;
+background:radial-gradient(ellipse at 50% 50%,#0a1f35 0%,#050d1a 70%);}
+.duas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:1.5rem;max-width:900px;margin:0 auto;}
+.dua-card{background:var(--card);border:1.5px solid #f5c84233;border-radius:18px;
+padding:1.8rem 1.4rem;text-align:center;transition:transform .3s,box-shadow .3s;}
+.dua-card:hover{transform:translateY(-6px);box-shadow:0 0 30px var(--gold);}
+.dua-card .di{font-size:2.2rem;margin-bottom:.8rem;}
+.dua-card .da{font-size:1.1rem;color:var(--gold);margin-bottom:.5rem;}
+.dua-card .dt{font-family:'Dancing Script',cursive;color:#c8e6ff;font-size:1.1rem;line-height:1.7;}
+#stars-sec{padding:5rem 1.5rem;min-height:55vh;position:relative;background:#050d1a;overflow:hidden;}
+#star-canvas{position:absolute;inset:0;width:100%;height:100%;}
+.star-pop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+background:linear-gradient(135deg,#0a1f35,#0d2a40);
+border:2px solid var(--gold);border-radius:20px;padding:1.5rem 2rem;
+color:var(--gold);font-family:'Dancing Script',cursive;font-size:1.7rem;
+text-align:center;box-shadow:0 0 40px var(--gold);z-index:100;
+opacity:0;pointer-events:none;transition:opacity .3s;}
+.star-pop.show{opacity:1;}
+#ending{min-height:100vh;display:flex;flex-direction:column;
+align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem;
+background:radial-gradient(ellipse at 50% 50%,#0d2a3a 0%,#050d1a 70%);position:relative;overflow:hidden;}
+#conf-canvas{position:absolute;inset:0;pointer-events:none;}
+.end-bis{font-family:'Dancing Script',cursive;font-size:clamp(1rem,2.5vw,1.4rem);
+color:var(--gold);opacity:.8;margin-bottom:1.5rem;position:relative;z-index:2;}
+.end-title{font-family:'Pacifico',cursive;font-size:clamp(1.8rem,6vw,3.8rem);
+background:linear-gradient(90deg,var(--gold),var(--teal),var(--mint),var(--gold));
+background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+animation:shimmer 3s linear infinite;filter:drop-shadow(0 0 18px var(--gold));
+margin-bottom:1rem;position:relative;z-index:2;}
+.end-msg{font-family:'Dancing Script',cursive;font-size:clamp(1.2rem,3.5vw,1.8rem);
+color:var(--teal);position:relative;z-index:2;margin-bottom:2rem;line-height:1.8;}
+.end-icons{font-size:2rem;animation:bounce 1.5s ease-in-out infinite;position:relative;z-index:2;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.sparkle{position:fixed;pointer-events:none;font-size:1rem;z-index:9998;animation:sparkOut .6s ease forwards;}
+@keyframes sparkOut{0%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(2) rotate(60deg);}}
+.float-up{position:fixed;pointer-events:none;font-size:1.5rem;z-index:400;animation:fUp 1.3s ease forwards;}
+@keyframes fUp{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-130px);}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+@media(max-width:500px){
+  .jars-grid{grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .duas-grid{grid-template-columns:1fr;}
+  .env{width:190px;height:140px;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+
+<div id="curtain">
+  <div class="c-half c-left"></div>
+  <div class="c-half c-right"></div>
+  <div id="curtain-text">
+    <h1>🌙 Bismillah 🌙</h1>
+    <p>Apke ki liye chhota sa surprise ✨</p>
+  </div>
+</div>
+
+<div id="rain"></div>
+
+<div class="overlay" id="hero-pop">
+  <div class="pop-card">
+    <span class="emoji">🌙</span>
+    <p>"Assalamu Alaikum Emmi-chan 🌸<br><br>
+    Candy ne yeh chota sa surprise sirf aap ke liye banaya hai.<br><br>
+    MashaAllah — aap bahut khaas hain.<br>Allah aap ko hamesha khush rakhe 💫"</p>
+    <div class="from">— your Candy 🍬</div>
+    <button class="close-btn" onclick="closeOv('hero-pop')">JazakAllah Khair 🌙</button>
+  </div>
+</div>
+
+<div class="overlay" id="jar-pop">
+  <div class="pop-card">
+    <span class="emoji" id="jar-emoji">🍬</span>
+    <p id="jar-msg"></p>
+    <div class="from">— Candy 🍬</div>
+    <button class="close-btn" onclick="closeOv('jar-pop')">MashaAllah 🌙</button>
+  </div>
+</div>
+
+<div class="star-pop" id="star-pop"></div>
+
+<main>
+
+<section id="hero">
+  <div class="bismillah">﷽ Bismillah ir-Rahman ir-Rahim</div>
+  <div class="moon-box" onclick="openHeroPop(event)">🌙</div>
+  <h1 class="hero-title">Assalamu Alaikum Emmi-chan 🌸</h1>
+  <p class="hero-sub">Aap ke liye Candy ki taraf se ek khaas surprise 🍬<br>Khol ke dekhein — dil khush ho jayega InshaaAllah!</p>
+  <button class="btn" onclick="document.getElementById('jars').scrollIntoView({behavior:'smooth'})">🌙 Surprise Dekhein</button>
+</section>
+
+<section id="jars">
+  <h2 class="sec-title reveal">🍬 Candy ke Dil ki Batein</h2>
+  <p class="sec-sub reveal">Har jar mein ek khaas baat — click karein!</p>
+  <div class="jars-grid reveal">
+    <div class="jar j0" onclick="openJar(0)"><span class="je">🌙</span><div class="jl">Jar 1</div></div>
+    <div class="jar j1" onclick="openJar(1)"><span class="je">⭐</span><div class="jl">Jar 2</div></div>
+    <div class="jar j2" onclick="openJar(2)"><span class="je">🌸</span><div class="jl">Jar 3</div></div>
+    <div class="jar j3" onclick="openJar(3)"><span class="je">🍬</span><div class="jl">Jar 4</div></div>
+    <div class="jar j4" onclick="openJar(4)"><span class="je">✨</span><div class="jl">Jar 5</div></div>
+    <div class="jar j5" onclick="openJar(5)"><span class="je">💚</span><div class="jl">Jar 6</div></div>
+  </div>
+</section>
+
+<section id="letter-sec">
+  <h2 class="sec-title reveal">💌 Candy ka Khaas Khat</h2>
+  <p class="sec-sub reveal">Envelope click karein 🌙</p>
+  <div class="env-wrap reveal" onclick="openLetter()"><div class="env">✉️</div></div>
+  <div id="letter-card">
+    <span class="seal">🌙 ﷽ 🌙</span>
+    Assalamu Alaikum Emmi-chan,<br><br>
+    Aap ke saath waqt guzarna hamesha<br>
+    bahut acha lagta hai 🌸<br><br>
+    Aap ek bahut achhi insaan hain —<br>
+    MashaAllah. Allah ne aap ko bahut<br>
+    khoobsurat akhlaaq diya hai 💫<br><br>
+    Yeh chota sa surprise Candy ki taraf se<br>
+    sirf aap ke liye hai — dil se! 🍬<br><br>
+    Allah aap ko hamesha khush rakhe,<br>
+    Ameen. 🌙
+    <div class="sign">— your Candy 🍬</div>
+  </div>
+</section>
+
+<section id="duas-sec">
+  <h2 class="sec-title reveal">🌙 Emmi-chan ke Liye Duaein</h2>
+  <p class="sec-sub reveal">Candy ki taraf se pyaari duaein 🌸</p>
+  <div class="duas-grid reveal">
+    <div class="dua-card">
+      <div class="di">🌙</div>
+      <div class="da">MashaAllah</div>
+      <div class="dt">Aap bahut khaas hain — Allah ne aap ko bahut achha banaya hai</div>
+    </div>
+    <div class="dua-card">
+      <div class="di">⭐</div>
+      <div class="da">Alhamdulillah</div>
+      <div class="dt">Aap ki baaton mein bahut barkat hai, Alhamdulillah</div>
+    </div>
+    <div class="dua-card">
+      <div class="di">🌸</div>
+      <div class="da">InshaaAllah</div>
+      <div class="dt">InshaaAllah aap hamesha khush aur aabaad rahein</div>
+    </div>
+    <div class="dua-card">
+      <div class="di">💚</div>
+      <div class="da">JazakAllah Khair</div>
+      <div class="dt">Aap ki khushiyan dekhna dil ko sukoon deta hai</div>
+    </div>
+    <div class="dua-card">
+      <div class="di">✨</div>
+      <div class="da">Ameen</div>
+      <div class="dt">Allah aap ke har sapne ko poora kare — Ameen 🌙</div>
+    </div>
+    <div class="dua-card">
+      <div class="di">🍬</div>
+      <div class="da">SubhanAllah</div>
+      <div class="dt">SubhanAllah — Emmi-chan ek khaas noor hai 🌸</div>
+    </div>
+  </div>
+</section>
+
+<section id="stars-sec">
+  <div style="position:relative;z-index:2;padding-bottom:1rem;">
+    <h2 class="sec-title reveal">⭐ Aasmaan ke Taare</h2>
+    <p class="sec-sub reveal">Kisi bhi taare pe click karein 🌙</p>
+  </div>
+  <canvas id="star-canvas"></canvas>
+</section>
+
+<section id="ending">
+  <canvas id="conf-canvas"></canvas>
+  <div class="end-bis">﷽</div>
+  <h1 class="end-title">Emmi-chan 🌙 Aap Bahut Khaas Hain</h1>
+  <p class="end-msg">
+    MashaAllah — hamesha khush rahein 🌸<br>
+    Allah aap ko apni hifazat mein rakhe 💫<br>
+    — your Candy 🍬
+  </p>
+  <div class="end-icons">🌙 ⭐ 🌸 🍬 ✨</div>
+</section>
+
+</main>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  if(Math.random()<.07)spawnSparkle(e.clientX,e.clientY);
+});
+function spawnSparkle(x,y){
+  const s=document.createElement('div');s.className='sparkle';
+  const arr=['✨','🌙','⭐','🌸','🍬'];
+  s.textContent=arr[Math.floor(Math.random()*arr.length)];
+  s.style.left=x+'px';s.style.top=y+'px';
+  document.body.appendChild(s);setTimeout(()=>s.remove(),600);
+}
+
+// RAIN
+const rain=document.getElementById('rain');
+const drops=['🌙','⭐','✨','🌸','🍬','💫','🌟'];
+function makeDrop(){
+  const d=document.createElement('div');d.className='cd';
+  d.textContent=drops[Math.floor(Math.random()*drops.length)];
+  d.style.left=Math.random()*100+'vw';
+  const dur=5+Math.random()*5;
+  d.style.animationDuration=dur+'s';
+  d.style.animationDelay=(Math.random()*2)+'s';
+  d.style.fontSize=(.8+Math.random()*.9)+'rem';
+  rain.appendChild(d);
+  setTimeout(()=>d.remove(),(dur+3)*1000);
+}
+setInterval(makeDrop,280);
+
+// CURTAIN
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('curtain').classList.add('open');
+    setTimeout(()=>document.getElementById('curtain').style.display='none',1400);
+  },1400);
+});
+
+// HERO POP
+function openHeroPop(e){
+  spawnFloats(e.clientX,e.clientY);
+  document.getElementById('hero-pop').classList.add('show');
+}
+function closeOv(id){document.getElementById(id).classList.remove('show');}
+function spawnFloats(x,y){
+  const arr=['🌙','⭐','🌸','✨','🍬'];
+  for(let i=0;i<8;i++){
+    const f=document.createElement('div');f.className='float-up';
+    f.textContent=arr[Math.floor(Math.random()*arr.length)];
+    f.style.left=(x+(-40+Math.random()*80))+'px';
+    f.style.top=y+'px';
+    f.style.animationDelay=(Math.random()*.4)+'s';
+    document.body.appendChild(f);setTimeout(()=>f.remove(),1500);
+  }
+}
+
+// JARS
+const jarData=[
+  {e:'🌙',m:'Emmi-chan, aap ki smile MashaAllah bahut pyaari hai 🌸<br>Allah aap ko hamesha aise hi khush rakhe!'},
+  {e:'⭐',m:'Aap jahan hoti hain, wahan ek alag hi roshan hoti hai ✨<br>SubhanAllah!'},
+  {e:'🌸',m:'Aap bahut achhi insaan hain Emmi-chan 🍬<br>Aap ki bataon mein bahut barkat hai, Alhamdulillah!'},
+  {e:'🍬',m:'Candy chahta/chahti hai ke aap hamesha khush rahein 💫<br>InshaaAllah zindagi mein bahut kamiyabi mile!'},
+  {e:'✨',m:'Aap bahut strong aur samajhdar hain MashaAllah 🌙<br>Allah aap ki hifazat kare, Ameen!'},
+  {e:'💚',m:'Yeh surprise sirf aap ke liye hai Emmi-chan 🌸<br>JazakAllah Khair for being so amazing!'}
+];
+function openJar(i){
+  document.getElementById('jar-emoji').textContent=jarData[i].e;
+  document.getElementById('jar-msg').innerHTML=jarData[i].m;
+  document.getElementById('jar-pop').classList.add('show');
+}
+
+// LETTER
+let lOpen=false;
+function openLetter(){
+  if(lOpen)return;lOpen=true;
+  document.getElementById('letter-card').style.display='block';
+}
+
+// STARS
+(function(){
+  const canvas=document.getElementById('star-canvas');
+  const sec=document.getElementById('stars-sec');
+  const ctx=canvas.getContext('2d');
+  const msgs=['MashaAllah ✨','SubhanAllah 🌸','Alhamdulillah 💫','InshaaAllah 🌙',
+    'Emmi-chan ⭐','Ameen 🤲','Barkat 🌟','Noor 🌙','Khushiyan 🌸','JazakAllah 🍬'];
+  let stars=[];
+  function resize(){canvas.width=sec.offsetWidth;canvas.height=sec.offsetHeight;build();}
+  function build(){
+    stars=[];
+    for(let i=0;i<60;i++){
+      stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,
+        r:1.5+Math.random()*2.5,a:Math.random()*Math.PI*2,
+        speed:.003+Math.random()*.005,
+        msg:msgs[Math.floor(Math.random()*msgs.length)]});
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s=>{
+      s.a+=s.speed;const b=.5+.5*Math.sin(s.a);
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,200,66,${b})`;ctx.fill();
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r+3,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,200,66,${b*.15})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  canvas.addEventListener('click',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const cx=e.clientX-rect.left,cy=e.clientY-rect.top;
+    let hit=null,minD=Infinity;
+    stars.forEach(s=>{const d=Math.hypot(s.x-cx,s.y-cy);if(d<22&&d<minD){minD=d;hit=s;}});
+    const pop=document.getElementById('star-pop');
+    if(hit){pop.textContent=hit.msg;pop.classList.add('show');
+      setTimeout(()=>pop.classList.remove('show'),2200);}
+  });
+  window.addEventListener('resize',resize);
+  resize();draw();
+})();
+
+// CONFETTI
+let confDone=false;
+const endSec=document.getElementById('ending');
+const confCanvas=document.getElementById('conf-canvas');
+const confCtx=confCanvas.getContext('2d');
+let particles=[];
+function launchConf(){
+  confCanvas.width=endSec.offsetWidth;confCanvas.height=endSec.offsetHeight;
+  const colors=['#f5c842','#2dd4bf','#6ee7b7','#a78bfa','#f472b6','#34d399'];
+  for(let i=0;i<150;i++){
+    particles.push({x:Math.random()*confCanvas.width,y:-10,
+      vx:(Math.random()-.5)*3,vy:1.5+Math.random()*2,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      r:4+Math.random()*5,rot:Math.random()*Math.PI*2,
+      rs:(Math.random()-.5)*.15,life:1});
+  }
+  animConf();
+}
+function animConf(){
+  confCtx.clearRect(0,0,confCanvas.width,confCanvas.height);
+  particles=particles.filter(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.rot+=p.rs;p.life-=.005;
+    confCtx.save();confCtx.globalAlpha=p.life;
+    confCtx.translate(p.x,p.y);confCtx.rotate(p.rot);
+    confCtx.fillStyle=p.color;confCtx.fillRect(-p.r/2,-p.r/2,p.r,p.r);
+    confCtx.restore();return p.life>0;
+  });
+  if(particles.length>0)requestAnimationFrame(animConf);
+}
+
+// SCROLL REVEAL
+const revEls=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting)en.target.classList.add('visible');});
+},{threshold:.15});
+revEls.forEach(el=>obs.observe(el));
+
+const endObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{if(en.isIntersecting&&!confDone){confDone=true;launchConf();}});
+},{threshold:.3});
+endObs.observe(endSec);
+</script>
+</body>
+</html>
